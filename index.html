@@ -3,171 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MD4 Class Fund - 15,000 TZS</title>
+    <title>MD5 Class Fund Portal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
-        .card-stats { border: none; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.2s; }
-        .card-stats:hover { transform: translateY(-5px); }
-        .status-badge { padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85rem; width: 100px; display: inline-block; text-align: center; }
-        .paid { background-color: #d1e7dd; color: #0f5132; }
-        .unpaid { background-color: #f8d7da; color: #842029; }
-        .money-text { font-family: 'Courier New', monospace; font-weight: bold; }
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --success-color: #00b09b;
+            --danger-color: #ff5e62;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Poppins', sans-serif;
+            color: #4a4a4a;
+        }
+
+        /* Hero Section */
+        .hero-header {
+            background: var(--primary-gradient);
+            padding: 60px 0 100px; /* Extra padding at bottom for overlap */
+            color: white;
+            border-radius: 0 0 30px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Stats Cards - Floating Effect */
+        .stats-container {
+            margin-top: -60px; /* Pulls cards up into the header */
+            position: relative;
+            z-index: 10;
+        }
+
+        .stat-card {
+            background: white;
+            border: none;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .stat-card:hover { transform: translateY(-5px); }
+        
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+        
+        .stat-number { font-size: 2.5rem; font-weight: 700; color: #333; }
+        .stat-label { color: #888; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Search Bar */
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            border: none;
+            border-radius: 50px;
+            padding: 15px 25px 15px 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            width: 100%;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 5px 20px rgba(118, 75, 162, 0.2);
+            transform: scale(1.01);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+
+        /* Table Design */
+        .list-card {
+            background: white;
+            border-radius: 25px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            border: none;
+        }
+
+        .custom-table thead {
+            background: #f8f9fa;
+        }
+
+        .custom-table th {
+            border: none;
+            padding: 20px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .custom-table td {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 15px 20px;
+            vertical-align: middle;
+        }
+
+        .custom-table tr:last-child td { border-bottom: none; }
+        .custom-table tr { transition: background 0.2s; }
+        .custom-table tr:hover { background-color: #fcfcfc; }
+
+        /* RegNo Styling */
+        .reg-no {
+            font-family: 'Courier New', monospace;
+            background: #eee;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        /* Status Badge */
+        .status-pill {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-paid {
+            background: rgba(0, 176, 155, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-unpaid {
+            background: rgba(255, 94, 98, 0.1);
+            color: var(--danger-color);
+        }
+
+        .dot {
+            height: 8px;
+            width: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .dot-green { background-color: var(--success-color); box-shadow: 0 0 10px var(--success-color); }
+        .dot-red { background-color: var(--danger-color); }
+
+        /* Loading Animation */
+        .loading-spinner {
+            color: #764ba2;
+        }
     </style>
 </head>
 <body>
 
-<div class="container py-5">
-    
-    <div class="text-center mb-5">
-        <h2 class="fw-bold text-primary">MD4 Fund Collection</h2>
-        <p class="text-muted">Contribution Amount: <span class="badge bg-info text-dark">15,000 TZS</span></p>
-    </div>
+    <header class="hero-header text-center">
+        <div class="container">
+            <h1 class="fw-bold display-4 mb-2">MD5 Class Fund</h1>
+            <p class="opacity-75 lead">Official Contribution Portal &bull; 2026</p>
+        </div>
+    </header>
 
-    <div class="row g-4 mb-5">
-        <div class="col-md-4">
-            <div class="card card-stats p-3 text-center bg-white">
-                <h6 class="text-muted text-uppercase small">Total Collected</h6>
-                <h3 class="money-text text-success" id="totalCollected">0 TZS</h3>
+    <div class="container mb-5">
+        
+        <div class="row g-4 stats-container justify-content-center">
+            <div class="col-md-4 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon text-success"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="stat-number" id="countPaid">0</div>
+                    <div class="stat-label">Paid Members</div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card card-stats p-3 text-center bg-white">
-                <h6 class="text-muted text-uppercase small">Pending Amount</h6>
-                <h3 class="money-text text-danger" id="totalPending">0 TZS</h3>
+            <div class="col-md-4 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon text-danger"><i class="fa-solid fa-circle-xmark"></i></div>
+                    <div class="stat-number" id="countUnpaid">0</div>
+                    <div class="stat-label">Unpaid Members</div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card card-stats p-3 text-center bg-white">
-                <h6 class="text-muted text-uppercase small">Progress</h6>
-                <h3 class="text-primary" id="progressPercent">0%</h3>
-                <div class="progress" style="height: 5px;">
-                    <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%"></div>
+            <div class="col-md-4 col-sm-12">
+                <div class="stat-card">
+                    <div class="stat-icon text-primary"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-number" id="countTotal">0</div>
+                    <div class="stat-label">Total Students</div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="row justify-content-center mb-4">
-        <div class="col-md-6">
-            <input type="text" id="searchInput" class="form-control form-control-lg" placeholder="🔍 Search Name or RegNo..." onkeyup="filterTable()">
-        </div>
-    </div>
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-10">
+                
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search by Name or RegNo..." onkeyup="filterTable()">
+                </div>
 
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="bg-light">
-                        <tr>
-                            <th class="ps-4">Reg No</th>
-                            <th>Name</th>
-                            <th class="text-center">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <tr><td colspan="3" class="text-center py-4">Loading data from Google Sheets...</td></tr>
-                    </tbody>
-                </table>
+                <div class="card list-card">
+                    <div class="table-responsive">
+                        <table class="table custom-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">Registration No</th>
+                                    <th>Student Name</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <tr>
+                                    <td colspan="3" class="text-center py-5">
+                                        <div class="spinner-border loading-spinner" role="status"></div>
+                                        <p class="mt-2 text-muted">Connecting to Sheet...</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4 text-muted small">
+                    <p><i class="fa-solid fa-lock"></i> Securely connected to Google Sheets Database</p>
+                </div>
+
             </div>
         </div>
     </div>
-    
-    <div class="text-center mt-4 text-muted small">
-        <p>Admin: Update the Google Sheet directly to change status.</p>
-    </div>
 
-</div>
+    <script>
+        // ==========================================
+        // PASTE YOUR CSV LINK BELOW
+        // ==========================================
+        const SHEET_URL = "YOUR_GOOGLE_SHEET_CSV_LINK_HERE"; 
+        // ==========================================
 
-<script>
-    // ---------------------------------------------------------
-    // 1. PASTE YOUR GOOGLE SHEETS CSV LINK HERE INSIDE THE QUOTES
-    // ---------------------------------------------------------
-    const SHEET_URL = "YOUR_GOOGLE_SHEET_CSV_LINK_HERE"; 
-    // Example: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ.../pub?output=csv"
+        let students = [];
 
-    const COST_PER_STUDENT = 15000;
-    let students = [];
+        window.onload = async function() {
+            try {
+                const response = await fetch(SHEET_URL);
+                if (!response.ok) throw new Error("Connection failed");
+                const data = await response.text();
+                parseCSV(data);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('tableBody').innerHTML = `
+                    <tr><td colspan="3" class="text-center text-danger py-5">
+                        <i class="fa-solid fa-triangle-exclamation fa-2x mb-3"></i><br>
+                        <strong>Unable to load data.</strong><br>Check your internet or CSV Link.
+                    </td></tr>`;
+            }
+        };
 
-    // Fetch Data on Load
-    window.onload = async function() {
-        try {
-            const response = await fetch(SHEET_URL);
-            const data = await response.text();
-            parseCSV(data);
-        } catch (error) {
-            console.error(error);
-            document.getElementById('tableBody').innerHTML = `
-                <tr><td colspan="3" class="text-center text-danger py-4">
-                    Error loading data. <br>Did you paste the correct CSV link?
-                </td></tr>`;
-        }
-    };
-
-    function parseCSV(csvText) {
-        const rows = csvText.split('\n').slice(1); // Remove header row
-        students = rows.map(row => {
-            // Split by comma, but handle comma inside quotes if necessary
-            // Simple split for basic CSV
-            const cols = row.split(',');
-            if (cols.length < 3) return null;
+        function parseCSV(csvText) {
+            const rows = csvText.split('\n').slice(1);
             
-            return {
-                reg: cols[0].trim(),
-                name: cols[1].trim(),
-                status: cols[2].trim().toUpperCase().replace(/[\r\n]+/gm, "")
+            students = rows.map(row => {
+                const cols = row.split(',');
+                if (cols.length < 3) return null;
+                
+                return {
+                    reg: cols[0].trim(),
+                    name: cols[1].trim(),
+                    status: cols[2].trim().toUpperCase().replace(/[\r\n]+/gm, "")
+                };
+            }).filter(s => s !== null && s.reg !== "");
+
+            updateStats();
+            renderTable(students);
+        }
+
+        function updateStats() {
+            const total = students.length;
+            const paid = students.filter(s => s.status === 'PAID').length;
+            const unpaid = total - paid;
+
+            // Animate numbers
+            animateValue("countPaid", 0, paid, 1000);
+            animateValue("countUnpaid", 0, unpaid, 1000);
+            animateValue("countTotal", 0, total, 1000);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" class="text-center py-4 text-muted">No students found.</td></tr>';
+                return;
+            }
+
+            data.forEach(student => {
+                const isPaid = student.status === 'PAID';
+                
+                const badge = isPaid 
+                    ? `<div class="status-pill status-paid"><span class="dot dot-green"></span> PAID</div>`
+                    : `<div class="status-pill status-unpaid"><span class="dot dot-red"></span> UNPAID</div>`;
+
+                const tr = `
+                    <tr>
+                        <td class="ps-4"><span class="reg-no">${student.reg}</span></td>
+                        <td class="fw-bold text-dark">${student.name}</td>
+                        <td class="text-center">${badge}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += tr;
+            });
+        }
+
+        function filterTable() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = students.filter(s => 
+                s.name.toLowerCase().includes(term) || 
+                s.reg.toLowerCase().includes(term)
+            );
+            renderTable(filtered);
+        }
+
+        // Helper for number animation
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
             };
-        }).filter(s => s !== null); // Remove empty rows
-
-        updateDashboard();
-        renderTable(students);
-    }
-
-    function updateDashboard() {
-        const paidCount = students.filter(s => s.status === 'PAID').length;
-        const totalCount = students.length;
-        const collected = paidCount * COST_PER_STUDENT;
-        const pending = (totalCount - paidCount) * COST_PER_STUDENT;
-        const percent = totalCount > 0 ? Math.round((paidCount / totalCount) * 100) : 0;
-
-        // Format numbers with commas (e.g., 15,000)
-        document.getElementById('totalCollected').innerText = collected.toLocaleString() + " TZS";
-        document.getElementById('totalPending').innerText = pending.toLocaleString() + " TZS";
-        document.getElementById('progressPercent').innerText = percent + "%";
-        document.getElementById('progressBar').style.width = percent + "%";
-    }
-
-    function renderTable(data) {
-        const tbody = document.getElementById('tableBody');
-        tbody.innerHTML = '';
-        
-        data.forEach(student => {
-            const isPaid = student.status === 'PAID';
-            const badgeClass = isPaid ? 'paid' : 'unpaid';
-            const statusText = isPaid ? 'PAID' : 'UNPAID';
-
-            const tr = `
-                <tr>
-                    <td class="ps-4 fw-bold text-secondary">${student.reg}</td>
-                    <td>${student.name}</td>
-                    <td class="text-center">
-                        <span class="status-badge ${badgeClass}">${statusText}</span>
-                    </td>
-                </tr>
-            `;
-            tbody.innerHTML += tr;
-        });
-    }
-
-    function filterTable() {
-        const term = document.getElementById('searchInput').value.toLowerCase();
-        const filtered = students.filter(s => 
-            s.name.toLowerCase().includes(term) || 
-            s.reg.toLowerCase().includes(term)
-        );
-        renderTable(filtered);
-    }
-</script>
-
+            window.requestAnimationFrame(step);
+        }
+    </script>
 </body>
 </html>
