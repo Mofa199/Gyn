@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MD4 Class Fund - 15,000 TZS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+        .card-stats { border: none; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .card-stats:hover { transform: translateY(-5px); }
+        .status-badge { padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85rem; width: 100px; display: inline-block; text-align: center; }
+        .paid { background-color: #d1e7dd; color: #0f5132; }
+        .unpaid { background-color: #f8d7da; color: #842029; }
+        .money-text { font-family: 'Courier New', monospace; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary">MD4 Fund Collection</h2>
+        <p class="text-muted">Contribution Amount: <span class="badge bg-info text-dark">15,000 TZS</span></p>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card card-stats p-3 text-center bg-white">
+                <h6 class="text-muted text-uppercase small">Total Collected</h6>
+                <h3 class="money-text text-success" id="totalCollected">0 TZS</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-stats p-3 text-center bg-white">
+                <h6 class="text-muted text-uppercase small">Pending Amount</h6>
+                <h3 class="money-text text-danger" id="totalPending">0 TZS</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-stats p-3 text-center bg-white">
+                <h6 class="text-muted text-uppercase small">Progress</h6>
+                <h3 class="text-primary" id="progressPercent">0%</h3>
+                <div class="progress" style="height: 5px;">
+                    <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+            <input type="text" id="searchInput" class="form-control form-control-lg" placeholder="🔍 Search Name or RegNo..." onkeyup="filterTable()">
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">Reg No</th>
+                            <th>Name</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr><td colspan="3" class="text-center py-4">Loading data from Google Sheets...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center mt-4 text-muted small">
+        <p>Admin: Update the Google Sheet directly to change status.</p>
+    </div>
+
+</div>
+
+<script>
+    // ---------------------------------------------------------
+    // 1. PASTE YOUR GOOGLE SHEETS CSV LINK HERE INSIDE THE QUOTES
+    // ---------------------------------------------------------
+    const SHEET_URL = "YOUR_GOOGLE_SHEET_CSV_LINK_HERE"; 
+    // Example: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ.../pub?output=csv"
+
+    const COST_PER_STUDENT = 15000;
+    let students = [];
+
+    // Fetch Data on Load
+    window.onload = async function() {
+        try {
+            const response = await fetch(SHEET_URL);
+            const data = await response.text();
+            parseCSV(data);
+        } catch (error) {
+            console.error(error);
+            document.getElementById('tableBody').innerHTML = `
+                <tr><td colspan="3" class="text-center text-danger py-4">
+                    Error loading data. <br>Did you paste the correct CSV link?
+                </td></tr>`;
+        }
+    };
+
+    function parseCSV(csvText) {
+        const rows = csvText.split('\n').slice(1); // Remove header row
+        students = rows.map(row => {
+            // Split by comma, but handle comma inside quotes if necessary
+            // Simple split for basic CSV
+            const cols = row.split(',');
+            if (cols.length < 3) return null;
+            
+            return {
+                reg: cols[0].trim(),
+                name: cols[1].trim(),
+                status: cols[2].trim().toUpperCase().replace(/[\r\n]+/gm, "")
+            };
+        }).filter(s => s !== null); // Remove empty rows
+
+        updateDashboard();
+        renderTable(students);
+    }
+
+    function updateDashboard() {
+        const paidCount = students.filter(s => s.status === 'PAID').length;
+        const totalCount = students.length;
+        const collected = paidCount * COST_PER_STUDENT;
+        const pending = (totalCount - paidCount) * COST_PER_STUDENT;
+        const percent = totalCount > 0 ? Math.round((paidCount / totalCount) * 100) : 0;
+
+        // Format numbers with commas (e.g., 15,000)
+        document.getElementById('totalCollected').innerText = collected.toLocaleString() + " TZS";
+        document.getElementById('totalPending').innerText = pending.toLocaleString() + " TZS";
+        document.getElementById('progressPercent').innerText = percent + "%";
+        document.getElementById('progressBar').style.width = percent + "%";
+    }
+
+    function renderTable(data) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        
+        data.forEach(student => {
+            const isPaid = student.status === 'PAID';
+            const badgeClass = isPaid ? 'paid' : 'unpaid';
+            const statusText = isPaid ? 'PAID' : 'UNPAID';
+
+            const tr = `
+                <tr>
+                    <td class="ps-4 fw-bold text-secondary">${student.reg}</td>
+                    <td>${student.name}</td>
+                    <td class="text-center">
+                        <span class="status-badge ${badgeClass}">${statusText}</span>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += tr;
+        });
+    }
+
+    function filterTable() {
+        const term = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = students.filter(s => 
+            s.name.toLowerCase().includes(term) || 
+            s.reg.toLowerCase().includes(term)
+        );
+        renderTable(filtered);
+    }
+</script>
+
+</body>
+</html>
