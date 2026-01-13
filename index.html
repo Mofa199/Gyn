@@ -27,7 +27,7 @@
         /* Hero Section */
         .hero-header {
             background: var(--primary-gradient);
-            padding: 60px 0 100px; /* Extra padding at bottom for overlap */
+            padding: 60px 0 100px;
             color: white;
             border-radius: 0 0 30px 30px;
             position: relative;
@@ -47,9 +47,9 @@
 
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* Stats Cards - Floating Effect */
+        /* Stats Cards */
         .stats-container {
-            margin-top: -60px; /* Pulls cards up into the header */
+            margin-top: -60px;
             position: relative;
             z-index: 10;
         }
@@ -66,123 +66,39 @@
 
         .stat-card:hover { transform: translateY(-5px); }
         
-        .stat-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            opacity: 0.8;
-        }
-        
+        .stat-icon { font-size: 2rem; margin-bottom: 10px; opacity: 0.8; }
         .stat-number { font-size: 2.5rem; font-weight: 700; color: #333; }
         .stat-label { color: #888; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
 
         /* Search Bar */
-        .search-wrapper {
-            position: relative;
-            margin-bottom: 30px;
-        }
-
+        .search-wrapper { position: relative; margin-bottom: 30px; }
         .search-input {
-            border: none;
-            border-radius: 50px;
-            padding: 15px 25px 15px 50px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            width: 100%;
-            font-size: 1rem;
+            border: none; border-radius: 50px; padding: 15px 25px 15px 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05); width: 100%; font-size: 1rem;
             transition: all 0.3s ease;
         }
-
-        .search-input:focus {
-            outline: none;
-            box-shadow: 0 5px 20px rgba(118, 75, 162, 0.2);
-            transform: scale(1.01);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #aaa;
-        }
+        .search-input:focus { outline: none; box-shadow: 0 5px 20px rgba(118, 75, 162, 0.2); transform: scale(1.01); }
+        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #aaa; }
 
         /* Table Design */
         .list-card {
-            background: white;
-            border-radius: 25px;
-            box-shadow: var(--card-shadow);
-            overflow: hidden;
-            border: none;
+            background: white; border-radius: 25px; box-shadow: var(--card-shadow);
+            overflow: hidden; border: none;
         }
-
-        .custom-table thead {
-            background: #f8f9fa;
-        }
-
-        .custom-table th {
-            border: none;
-            padding: 20px;
-            font-weight: 600;
-            color: #666;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-        }
-
-        .custom-table td {
-            border-bottom: 1px solid #f0f0f0;
-            padding: 15px 20px;
-            vertical-align: middle;
-        }
-
-        .custom-table tr:last-child td { border-bottom: none; }
-        .custom-table tr { transition: background 0.2s; }
+        .custom-table thead { background: #f8f9fa; }
+        .custom-table th { border: none; padding: 20px; font-weight: 600; color: #666; text-transform: uppercase; font-size: 0.85rem; }
+        .custom-table td { border-bottom: 1px solid #f0f0f0; padding: 15px 20px; vertical-align: middle; }
         .custom-table tr:hover { background-color: #fcfcfc; }
+        .reg-no { font-family: 'Courier New', monospace; background: #eee; padding: 4px 8px; border-radius: 6px; font-weight: bold; color: #555; font-size: 0.9rem; }
 
-        /* RegNo Styling */
-        .reg-no {
-            font-family: 'Courier New', monospace;
-            background: #eee;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: bold;
-            color: #555;
-            font-size: 0.9rem;
-        }
-
-        /* Status Badge */
-        .status-pill {
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .status-paid {
-            background: rgba(0, 176, 155, 0.1);
-            color: var(--success-color);
-        }
-
-        .status-unpaid {
-            background: rgba(255, 94, 98, 0.1);
-            color: var(--danger-color);
-        }
-
-        .dot {
-            height: 8px;
-            width: 8px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        
+        /* Status Pills */
+        .status-pill { padding: 8px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
+        .status-paid { background: rgba(0, 176, 155, 0.1); color: var(--success-color); }
+        .status-unpaid { background: rgba(255, 94, 98, 0.1); color: var(--danger-color); }
+        .dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; }
         .dot-green { background-color: var(--success-color); box-shadow: 0 0 10px var(--success-color); }
         .dot-red { background-color: var(--danger-color); }
-
-        /* Loading Animation */
-        .loading-spinner {
-            color: #764ba2;
-        }
+        .loading-spinner { color: #764ba2; }
     </style>
 </head>
 <body>
@@ -190,7 +106,7 @@
     <header class="hero-header text-center">
         <div class="container">
             <h1 class="fw-bold display-4 mb-2">MD5 Class Fund</h1>
-            <p class="opacity-75 lead">Official Contribution Portal &bull; 2026</p>
+            <p class="opacity-75 lead">Instant Live Database &bull; 2026</p>
         </div>
     </header>
 
@@ -222,7 +138,6 @@
 
         <div class="row justify-content-center mt-5">
             <div class="col-lg-10">
-                
                 <div class="search-wrapper">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
                     <input type="text" id="searchInput" class="search-input" placeholder="Search by Name or RegNo..." onkeyup="filterTable()">
@@ -242,7 +157,7 @@
                                 <tr>
                                     <td colspan="3" class="text-center py-5">
                                         <div class="spinner-border loading-spinner" role="status"></div>
-                                        <p class="mt-2 text-muted">Connecting to Sheet...</p>
+                                        <p class="mt-2 text-muted">Fetching live data...</p>
                                     </td>
                                 </tr>
                             </tbody>
@@ -251,62 +166,55 @@
                 </div>
                 
                 <div class="text-center mt-4 text-muted small">
-                    <p><i class="fa-solid fa-lock"></i> Securely connected to Google Sheets Database</p>
+                    <button class="btn btn-sm btn-link text-decoration-none text-muted" onclick="location.reload()">
+                        <i class="fa-solid fa-rotate-right"></i> Refresh Data
+                    </button>
                 </div>
-
             </div>
         </div>
     </div>
 
     <script>
         // ==========================================
-        // PASTE YOUR CSV LINK BELOW
+        // PASTE YOUR SCRIPT URL BELOW (ends in /exec)
         // ==========================================
-        const SHEET_URL = "YOUR_GOOGLE_SHEET_CSV_LINK_HERE"; 
+        const SCRIPT_URL = "PASTE_YOUR_SCRIPT_URL_HERE"; 
+        // Example: "https://script.google.com/macros/s/AKfycbx.../exec"
         // ==========================================
 
         let students = [];
 
         window.onload = async function() {
             try {
-                const response = await fetch(SHEET_URL);
+                // We use 'no-cors' mode isn't needed for GET usually, 
+                // but Google redirects, so simple fetch works best.
+                const response = await fetch(SCRIPT_URL);
+                
                 if (!response.ok) throw new Error("Connection failed");
-                const data = await response.text();
-                parseCSV(data);
+                
+                // The script now returns JSON directly, no parsing CSV needed!
+                const data = await response.json();
+                
+                students = data;
+                updateStats();
+                renderTable(students);
+
             } catch (error) {
                 console.error(error);
                 document.getElementById('tableBody').innerHTML = `
                     <tr><td colspan="3" class="text-center text-danger py-5">
                         <i class="fa-solid fa-triangle-exclamation fa-2x mb-3"></i><br>
-                        <strong>Unable to load data.</strong><br>Check your internet or CSV Link.
+                        <strong>Unable to load data.</strong><br>
+                        Did you set "Who has access" to "Anyone" when deploying?
                     </td></tr>`;
             }
         };
-
-        function parseCSV(csvText) {
-            const rows = csvText.split('\n').slice(1);
-            
-            students = rows.map(row => {
-                const cols = row.split(',');
-                if (cols.length < 3) return null;
-                
-                return {
-                    reg: cols[0].trim(),
-                    name: cols[1].trim(),
-                    status: cols[2].trim().toUpperCase().replace(/[\r\n]+/gm, "")
-                };
-            }).filter(s => s !== null && s.reg !== "");
-
-            updateStats();
-            renderTable(students);
-        }
 
         function updateStats() {
             const total = students.length;
             const paid = students.filter(s => s.status === 'PAID').length;
             const unpaid = total - paid;
 
-            // Animate numbers
             animateValue("countPaid", 0, paid, 1000);
             animateValue("countUnpaid", 0, unpaid, 1000);
             animateValue("countTotal", 0, total, 1000);
@@ -348,9 +256,9 @@
             renderTable(filtered);
         }
 
-        // Helper for number animation
         function animateValue(id, start, end, duration) {
             const obj = document.getElementById(id);
+            if(!obj) return;
             let startTimestamp = null;
             const step = (timestamp) => {
                 if (!startTimestamp) startTimestamp = timestamp;
