@@ -31,7 +31,7 @@
         .hero-section {
             background-color: var(--brand-color);
             color: var(--white);
-            /* Increase bottom padding to make room for cards overlapping */
+            /* Bottom padding ensures space for the overlapping cards */
             padding-top: 3rem;
             padding-bottom: 6rem; 
             border-radius: 0 0 2.5rem 2.5rem;
@@ -52,7 +52,7 @@
             font-weight: 400;
         }
 
-        /* 2. STATS CARDS (The Fix) */
+        /* 2. STATS CARDS (Floating Logic) */
         .stats-container {
             /* Pull the container UP to overlap the blue header */
             margin-top: -4rem; 
@@ -240,7 +240,7 @@
 
     <script>
         // ===============================================
-        // PASTE YOUR GOOGLE APPS SCRIPT URL HERE
+        // YOUR SCRIPT IS INSERTED HERE
         // ===============================================
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbziXZGzJtA9Mq759ClkCCc_3zzP5OXwbgh7RNmm2KhBrwaykni2Glo_O4D3biG8UTdX/exec"; 
         // ===============================================
@@ -263,7 +263,7 @@
                     <div class="col-12 text-center text-danger py-5">
                         <i class="fa-solid fa-triangle-exclamation fa-2x mb-3"></i>
                         <h4>Could not load data</h4>
-                        <p>Check internet connection or script URL.</p>
+                        <p>1. Check your internet.<br>2. Make sure you Deployed the Script as "Anyone".</p>
                     </div>`;
             }
         };
